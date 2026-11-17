@@ -1,0 +1,10 @@
+[project]
+name = "nand2tetris-walker"
+version = "0.1.0"
+description = "nand2tetris walker"
+readme = "README.md"
+requires-python = ">=3.10.5"
+dependencies = []
+
+[project.scripts]
+n2tw = "nand2tetris_walker.cli:main"

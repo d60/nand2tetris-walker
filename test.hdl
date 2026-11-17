@@ -1,0 +1,99 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/2/ALU.hdl
+/**
+ * ALU (Arithmetic Logic Unit):
+ * Computes out = one of the following functions:
+ *                0, 1, -1,
+ *                x, y, !x, !y, -x, -y,
+ *                x + 1, y + 1, x - 1, y - 1,
+ *                x + y, x - y, y - x,
+ *                x & y, x | y
+ * on the 16-bit inputs x, y,
+ * according to the input bits zx, nx, zy, ny, f, no.
+ * In addition, computes the two output bits:
+ * if (out == 0) zr = 1, else zr = 0
+ * if (out < 0)  ng = 1, else ng = 0
+ */
+// Implementation: Manipulates the x and y inputs
+// and operates on the resulting values, as follows:
+// if (zx == 1) sets x = 0        // 16-bit constant
+// if (nx == 1) sets x = !x       // bitwise not
+// if (zy == 1) sets y = 0        // 16-bit constant
+// if (ny == 1) sets y = !y       // bitwise not
+// if (f == 1)  sets out = x + y  // integer 2's complement addition
+// if (f == 0)  sets out = x & y  // bitwise and
+// if (no == 1) sets out = !out   // bitwise not
+
+CHIP ALU {
+    IN
+        x[16], y[16],  // 16-bit inputs
+        zx, // zero the x input?
+        nx, // negate the x input?
+        zy, // zero the y input?
+        ny, // negate the y input?
+        f,  // compute (out = x + y) or (out = x & y)?
+        no; // negate the out output?
+    OUT
+        out[16], // 16-bit output
+        zr,      // if (out == 0) equals 1, else 0
+        ng;      // if (out < 0)  equals 1, else 0
+
+    PARTS:
+    Mux16(a=x, b[0..15]=false, sel=zx, out=x0);
+    Not16(in=x0, out=notx);
+    Mux16(a=x0, b=notx, sel=nx, out=x1);
+
+    Mux16(a=y, b[0..15]=false, sel=zy, out=y0);
+    Not16(in=y0, out=noty);
+    Mux16(a=y0, b=noty, sel=ny, out=y1);
+
+    Add16(a=x1, b=y1, out=addxy);
+    And16(a=x1, b=y1, out=andxy);
+
+    Mux16(a=andxy, b=addxy, sel=f, out=outraw);
+    Not16(in=outraw, out=notout);
+
+/**/
+
+    Mux16(a=outraw, b=notout, sel=no, out=out,
+        out[0]=out0,
+        out[1]=out1,
+        out[2]=out2,
+        out[3]=out3,
+        out[4]=out4,
+        out[5]=out5,
+        out[6]=out6,
+        out[7]=out7,
+        out[8]=out8,
+        out[9]=out9,
+        out[10]=out10,
+        out[11]=out11,
+        out[12]=out12,
+        out[13]=out13,
+        out[14]=out14,
+        out[15]=out15,
+        out[15]=ng
+    );
+
+    Or(a=out0, b=out1, out=b0);
+    Or(a=out2, b=out3, out=b1);
+    Or(a=out4, b=out5, out=b2);
+    Or(a=out6, b=out7, out=b3);
+    Or(a=out8, b=out9, out=b4);
+    Or(a=out10, b=out11, out=b5);
+    Or(a=out12, b=out13, out=b6);
+    Or(a=out14, b=out15, out=b7);
+
+    Or(a=b0, b=b1, out=c0);
+    Or(a=b2, b=b3, out=c1);
+    Or(a=b4, b=b5, out=c2);
+    Or(a=b6, b=b7, out=c3);
+
+    Or(a=c0, b=c1, out=d0);
+    Or(a=c2, b=c3, out=d1);
+
+    Or(a=d0, b=d1, out=notzr);
+    Not(in=notzr, out=zr);
+}
