@@ -20,7 +20,9 @@ class NandCounter:
             return self.nand_count[chip_name]
 
         if chip_name in self.seen:
-            raise RuntimeError(f'Interdependencies have been detected: `{chip_name}` and `{_parent_chip_name}`.')
+            raise RuntimeError(
+                f'Interdependencies have been detected: `{chip_name}` and `{_parent_chip_name}`.'
+            )
         self.seen.add(chip_name)
 
         cnt = 0

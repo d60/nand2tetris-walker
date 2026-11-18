@@ -30,12 +30,20 @@ def main():
         logger.error(f'[ERROR] `{path}` is not a directory.')
         sys.exit(1)
 
+    tree_chip = None
+    if len(sys.argv) > 2:
+        tree_chip = sys.argv[2]
+        if tree_chip not in CHIPS:
+            logger.error(f'[ERROR] `{tree_chip}` is not a chip name. Available chip names: {", ".join(CHIPS)}')
+            sys.exit(1)
+
     try:
         counts = HDLWalker(path=path).get_nand_counts()
     except Exception as e:
         logger.error(str(e))
         sys.exit(1)
 
+    logger.info(f'{"Chip": <11} Count')
     for name in CHIPS:
         if name == 'Nand':
             continue
