@@ -43,13 +43,14 @@ def main():
             sys.exit(1)
 
     walker = HDLWalker(path=path)
+
     try:
         counts = walker.get_nand_counts()
     except Exception as e:
         logger.error(str(e))
         sys.exit(1)
 
-    logger.info(f'{"Chip": <11} Count')
+    logger.info(f'{"Chip": <11} Nand')
     for name in CHIPS:
         if name == 'Nand':
             continue
@@ -60,8 +61,8 @@ def main():
         logger.info(f'{name: <11} {count}')
 
     if tree_chip:
-        logger.info('\nTree')
-        tree_node = walker.get_tree()
+        logger.info('')
+        tree_node = walker.get_tree(tree_chip)
         for pre, fill, node in RenderTree(tree_node):
             logger.info('%s%s' % (pre, node.name))
 

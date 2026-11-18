@@ -13,7 +13,8 @@ $ uv tool install git+https://github.com/d60/nand2tetris-walker
 
 ```shell
 $ n2tw path/to/nand2tetris/nand2tetris/projects
-ALU         1125
+Chip        Nand
+ALU         741
 Add16       231
 And         2
 And16       32
@@ -23,10 +24,10 @@ DMux8Way    35
 FullAdder   15
 HalfAdder   6
 Inc16       231
-Mux         8
-Mux16       128
-Mux4Way16   384
-Mux8Way16   896
+Mux         4
+Mux16       64
+Mux4Way16   192
+Mux8Way16   448
 Not         1
 Not16       16
 Or          3
@@ -35,3 +36,42 @@ Or8Way      21
 Xor         4
 ```
 The number on the right indicates the total number of NAND gates.
+Also, specify the chip name as the second argument to display the tree.
+
+```shell
+$ n2tw path/to/nand2tetris/nand2tetris/projects FullAdder
+Chip        Count
+ALU         741
+Add16       231
+And         2
+And16       32
+DMux        5
+DMux4Way    15
+DMux8Way    35
+FullAdder   15
+HalfAdder   6
+Inc16       231
+Mux         4
+Mux16       64
+Mux4Way16   192
+Mux8Way16   448
+Not         1
+Not16       16
+Or          3
+Or16        48
+Or8Way      21
+Xor         4
+
+FullAdder
+├── HalfAdder 2
+│   ├── Xor 1
+│   │   └── Nand 4
+│   └── And 1
+│       ├── Nand 1
+│       └── Not 1
+│           └── Nand 1
+└── Or 1
+    ├── Not 2
+    │   └── Nand 1
+    └── Nand 1
+```
