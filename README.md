@@ -37,6 +37,8 @@ Xor         4
 ```
 The number on the right indicates the total number of NAND gates.
 Also, specify the chip name as the second argument to display the tree.
+If specifying multiple names, separate them with commas e.g. `FullAdder,Inc16,Mux`.
+Specify a wildcard `*` to display all trees. Empty trees will be omitted.
 
 ```shell
 $ n2tw path/to/nand2tetris/nand2tetris/projects FullAdder
