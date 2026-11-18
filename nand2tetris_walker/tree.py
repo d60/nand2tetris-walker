@@ -45,8 +45,7 @@ class ChipTreeBuilder:
         for name, count in self.chip_counts[chip_name].items():
             if chip_name == name:
                 raise RuntimeError(f'Self reference found: `{chip_name}`')
-            cnode = self.get_node(name)
-            cnode.name += f' ({count})'
+            cnode = self.get_node(name, chip_name)
             cnode.parent = node
         self.nodes[chip_name] = node
         return self.get_node(chip_name)
