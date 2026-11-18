@@ -15,7 +15,7 @@ logger.setLevel(logging.INFO)
 logger.propagate = False
 
 
-def main(argv):
+def main(argv = sys.argv):
     if len(argv) < 2:
         logger.error(
             '[ERROR] Provide the path to the nand2tetris project directory.'
@@ -77,4 +77,4 @@ def main(argv):
     sys.exit(0)
 
 if __name__=='__main__':
-    main(sys.argv)
+    main()
