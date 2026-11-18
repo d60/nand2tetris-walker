@@ -2,6 +2,8 @@ import logging
 import sys
 from pathlib import Path
 
+from anytree import RenderTree
+
 from .parser import CHIPS
 from .walker import HDLWalker
 
@@ -34,11 +36,15 @@ def main():
     if len(sys.argv) > 2:
         tree_chip = sys.argv[2]
         if tree_chip not in CHIPS:
-            logger.error(f'[ERROR] `{tree_chip}` is not a chip name. Available chip names: {", ".join(CHIPS)}')
+            logger.error(
+                f'[ERROR] `{tree_chip}` is not a chip name.\n'
+                f'Available chip names: {", ".join(CHIPS)}'
+            )
             sys.exit(1)
 
+    walker = HDLWalker(path=path)
     try:
-        counts = HDLWalker(path=path).get_nand_counts()
+        counts = walker.get_nand_counts()
     except Exception as e:
         logger.error(str(e))
         sys.exit(1)
@@ -52,6 +58,12 @@ def main():
             # ignore count 0 since it has not yet been implemented
             continue
         logger.info(f'{name: <11} {count}')
+
+    if tree_chip:
+        logger.info('\nTree')
+        tree_node = walker.get_tree()
+        for pre, fill, node in RenderTree(tree_node):
+            logger.info('%s%s' % (pre, node.name))
 
     sys.exit(0)
 

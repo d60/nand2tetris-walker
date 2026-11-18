@@ -45,6 +45,6 @@ class HDLWalker:
         """
         return NandCounter(self.get_chip_counts()).count()
 
-    def build_tree(self, chip_name: str) -> Node:
+    def get_tree(self, chip_name: str) -> Node:
         builder = ChipTreeBuilder(self.get_chip_counts())
         return builder.get_node(chip_name)
