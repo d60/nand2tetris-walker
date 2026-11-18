@@ -65,15 +65,15 @@ Or8Way      21
 Xor         4
 
 FullAdder
-├── HalfAdder 2
-│   ├── Xor 1
-│   │   └── Nand 4
-│   └── And 1
-│       ├── Nand 1
-│       └── Not 1
-│           └── Nand 1
-└── Or 1
-    ├── Not 2
-    │   └── Nand 1
-    └── Nand 1
+├── HalfAdder
+│   ├── Xor
+│   │   └── Nand
+│   └── And
+│       ├── Nand
+│       └── Not
+│           └── Nand
+└── Or
+    ├── Not
+    │   └── Nand
+    └── Nand
 ```
