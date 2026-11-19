@@ -41,8 +41,8 @@ If specifying multiple names, separate them with commas e.g. `FullAdder,Inc16,Mu
 Specify a wildcard `*` to display all trees. Empty trees will be omitted.
 
 ```shell
-$ n2tw path/to/nand2tetris/nand2tetris/projects FullAdder
-Chip        Count
+$ n2tw path/to/nand2tetris/nand2tetris/projects FullAdder,DMux8Way
+Chip        Nand
 ALU         741
 Add16       231
 And         2
@@ -76,4 +76,13 @@ FullAdder
     ├── Not
     │   └── Nand
     └── Nand
+
+DMux8Way
+└── DMux
+    ├── Not
+    │   └── Nand
+    └── And
+        ├── Nand
+        └── Not
+            └── Nand
 ```
